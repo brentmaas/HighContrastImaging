@@ -3,7 +3,10 @@ import matplotlib.pyplot as plt
 import os
 from astropy.io import fits
 
-def create_cube(name, folder, size, apsize, apfile, star, planet, noise, noisemap, radius, phase, angles, anglesfile, diagrams):
+def create_cube(name, folder, size, apsize, apfile, star, planet, noise, noisemap, radius, phase, angles, anglesfile, diagrams, seed=None):
+    if not seed is None:
+        np.random.seed(seed)
+    
     valid = True
     if not apfile is None:
         if not os.path.exists(apfile):
@@ -109,6 +112,7 @@ if __name__ == "__main__":
     parser.add_argument("--angles", help="Rotation angles for each images in degrees.", type=float, nargs="+", default=None)
     parser.add_argument("--anglesfile", help="Also generate a FITS file containing the specified rotation angles.", type=bool, nargs="?", const=True, default=False)
     parser.add_argument("--diagrams", help="Also produce diagrams of each of the images.", type=bool, nargs="?", const=True, default=False)
+    parser.add_argument("--seed", help="Seed for the randomly generated noise.", type=int, default=None)
     args = parser.parse_args()
     
     create_cube(**vars(args))
